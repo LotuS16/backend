@@ -1,0 +1,219 @@
+openapi: 3.0.0 # Versi OpenAPI
+info: # Informasi umum tentang API
+  title: API Medpoint Mediverse version 1
+  version: 1.0.0 # Versi API
+  description: Document the api for get and put data to cloud server (supabase)
+servers: # Daftar server yang tersedia
+  - url: http://localhost:8002/ # 
+paths:
+  /rest/v1/doctor:
+    get:
+      summary: Mendapatkan daftar dokter
+      security:
+        - bearerAuth: []
+        - ApiKeyAuth: []
+      responses:
+        '200':
+          description: Berhasil mendapatkan data dokter
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    namadoctor:
+                      type: string
+                    spesialis:
+                      type: string
+                    user_id:
+                      type: string
+                      nullable: true
+
+    post:
+      summary: Menambahkan data dokter (Admin & Super Admin)
+      security:
+        - bearerAuth: []
+        - ApiKeyAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                namadoctor:
+                  type: string
+                spesialis:
+                  type: string
+                user_id:
+                  type: string
+                  nullable: true
+      responses:
+        '201':
+          description: Berhasil menambahkan dokter
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  message:
+                    type: string
+    put:
+      summary: Memperbarui data dokter (Admin & Super Admin)
+      security:
+        - bearerAuth: []
+        - ApiKeyAuth: []
+      parameters:
+        - name: id
+          in: query
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                namadoctor:
+                  type: string
+                spesialis:
+                  type: string
+                user_id:
+                  type: string
+                  nullable: true
+      responses:
+        '200':
+          description: Berhasil memperbarui dokter
+    delete:
+      summary: Menghapus data dokter (Admin & Super Admin)
+      security:
+        - bearerAuth: []
+        - ApiKeyAuth: []
+      parameters:
+        - name: id
+          in: query
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Berhasil menghapus dokter
+
+  /rest/v1/jadwal_doctors:
+    get:
+      summary: Mendapatkan jadwal dokter
+      security:
+        - bearerAuth: []
+        - ApiKeyAuth: []
+      responses:
+        '200':
+          description: Berhasil mendapatkan jadwal dokter
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    haripraktek:
+                      type: string
+                    jampraktek:
+                      type: string
+                    user_id:
+                      type: string
+
+    post:
+      summary: Menambahkan jadwal dokter (Admin & Super Admin)
+      security:
+        - bearerAuth: []
+        - ApiKeyAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                haripraktek:
+                  type: string
+                jampraktek:
+                  type: string
+                user_id:
+                  type: string
+      responses:
+        '201':
+          description: Berhasil menambahkan jadwal dokter
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  message:
+                    type: string
+
+    put:
+      summary: Memperbarui jadwal dokter (Admin & Super Admin)
+      security:
+        - bearerAuth: []
+        - ApiKeyAuth: []
+      parameters:
+        - name: id
+          in: query
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                haripraktek:
+                  type: string
+                jampraktek:
+                  type: string
+                user_id:
+                  type: string
+      responses:
+        '200':
+          description: Berhasil memperbarui jadwal dokter
+
+    delete:
+      summary: Menghapus jadwal dokter (Admin & Super Admin)
+      security:
+        - bearerAuth: []
+        - ApiKeyAuth: []
+      parameters:
+        - name: id
+          in: query
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Berhasil menghapus jadwal dokter
+components:
+  securitySchemes:
+    ApiKeyAuth: # arbitrary name for the security scheme
+      type: apiKey
+      in: header # can be "header", "query" or "cookie"
+      name: apikey
+    bearerAuth: # arbitrary name for the security scheme
+      type: http
+      scheme: bearer
+      bearerFormat: JWT # optional, arbitrary value for documentation purposes
+security:
+  - ApiKeyAuth: []
+  - ApiKeyAuth: []

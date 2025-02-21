@@ -1,0 +1,560 @@
+openapi: 3.0.0
+info:
+  title: API Medpoint Mediverse
+  version: 1.0.0
+  description: Document the API for getting and putting data to cloud server (Supabase)
+servers:
+  - description : Supabase server
+    url : https://olupukupsuudviumjakq.supabase.co
+  - description : development server
+    url: http://127.0.0.1:8002/
+tags:
+  - name: Admin
+    description: Akses penuh ke dokter dan jadwal dokter (CRUD)
+  - name: Super Admin
+    description: Akses penuh ke dokter dan jadwal dokter (CRUD)
+  - name: Doctor
+    description: Hanya bisa melihat daftar dokter dan jadwal dokter
+  - name: User
+    description: Hanya bisa melihat daftar dokter dan jadwal dokter
+paths:
+  /auth/v1/token:
+    post:
+      summary: Mendapatkan daftar dokter
+      tags:
+        - Doctor
+        - User
+        - Super Admin
+        - Admin
+      security:
+        - bearerAuth: []
+        - ApiKeyAuth: []
+      responses:
+        '200':
+          description: Doctor created successfully
+          content:
+            application/json:
+              example:
+                message: Doctor created successfully
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              example:
+                code: '23502'
+                details: string
+                hint: string
+                message: >-
+                  null value in column 'speciality' of relation 'doctors'
+                  violates not-null constraint
+        '401':
+          description: Unauthorized access
+          content:
+            application/json:
+              example:
+                message: No API key found in request
+                hint: No 'apikey' request header or url param was found.
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              example:
+                code: '23505'
+                message: Duplicate entry for doctor
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              example:
+                message: Internal server error
+                details: Unexpected error occurred
+  /rest/v1/doctor:
+    get:
+      summary: Mendapatkan daftar dokter
+      tags:
+        - Doctor
+        - User
+        - Super Admin
+        - Admin
+      security:
+        - bearerAuth: []
+        - ApiKeyAuth: []
+      parameters: 
+        - name: id
+          in: query
+          required: false
+          schema:
+            type: integer
+            example: eq.1
+      responses:
+        '200':
+          description: ok
+          content:
+            application/json:
+              example:
+                id: '1'
+                namadoctor: dr samudra
+                spesialis: jantung
+                user_id: 05eee5af-ea18-4156-b7fe-15c86aaa7e99
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              example:
+                code: '23502'
+                details: string
+                hint: string
+                message: >-
+                  null value in column 'speciality' of relation 'doctors'
+                  violates not-null constraint
+        '401':
+          description: Unauthorized access
+          content:
+            application/json:
+              example:
+                message: No API key found in request
+                hint: No apikey request header or url param was found
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              example:
+                message: No API key found in request
+                hint: No 'apikey' request header or url param was found.
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              example:
+                code: '23505'
+                message: Duplicate entry for doctor
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              example:
+                message: Internal server error
+                details: Unexpected error occurred
+    post:
+      summary: Menambahkan data dokter
+      tags:
+        - Admin
+        - Super Admin
+      security:
+        - bearerAuth: []
+        - ApiKeyAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                namadoctor:
+                  type: string
+                spesialis:
+                  type: string
+                user_id:
+                  type: string
+                  format: uuid
+      responses:
+        '201':
+          description: Doctor created successfully
+          content:
+            application/json:
+              example:
+                message: Doctor created successfully
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              example:
+                code: '23502'
+                details: string
+                hint: string
+                message: >-
+                  null value in column 'speciality' of relation 'doctors'
+                  violates not-null constraint
+        '401':
+          description: Unauthorized access
+          content:
+            application/json:
+              example:
+                message: No API key found in request
+                hint: No 'apikey' request header or url param was found.
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              example:
+                code: '23505'
+                message: Duplicate entry for doctor
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              example:
+                message: Internal server error
+                details: Unexpected error occurred
+    patch:
+      summary: Memperbarui data dokter
+      tags:
+        - Admin
+        - Super Admin
+      security:
+        - bearerAuth: []
+        - ApiKeyAuth: []
+      parameters:
+        - name: id
+          in: query
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                namadoctor:
+                  type: string
+                spesialis:
+                  type: string
+                user_id:
+                  type: string
+                  nullable: true
+      responses:
+        '201':
+          description: Doctor created successfully
+          content:
+            application/json:
+              example:
+                message: Doctor created successfully
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              example:
+                code: '23502'
+                details: string
+                hint: string
+                message: >-
+                  null value in column 'speciality' of relation 'doctors'
+                  violates not-null constraint
+        '401':
+          description: Unauthorized access
+          content:
+            application/json:
+              example:
+                message: No API key found in request
+                hint: No 'apikey' request header or url param was found.
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              example:
+                code: '23505'
+                message: Duplicate entry for doctor
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              example:
+                message: Internal server error
+                details: Unexpected error occurred
+    delete:
+      summary: Menghapus data dokter
+      tags:
+        - Admin
+        - Super Admin
+      security:
+        - bearerAuth: []
+        - ApiKeyAuth: []
+      parameters:
+        - name: id
+          in: query
+          required: true
+          schema:
+            type: integer
+      responses:
+        '201':
+          description: Doctor created successfully
+          content:
+            application/json:
+              example:
+                message: Doctor created successfully
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              example:
+                code: '23502'
+                details: string
+                hint: string
+                message: >-
+                  null value in column 'speciality' of relation 'doctors'
+                  violates not-null constraint
+        '401':
+          description: Unauthorized access
+          content:
+            application/json:
+              example:
+                message: No API key found in request
+                hint: No 'apikey' request header or url param was found.
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              example:
+                code: '23505'
+                message: Duplicate entry for doctor
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              example:
+                message: Internal server error
+                details: Unexpected error occurred
+  /rest/v1/jadwal_doctors:
+    get:
+      summary: Mendapatkan jadwal dokter
+      tags:
+        - Doctor
+        - User
+        - Admin
+        - Super Admin
+      security:
+        - bearerAuth: []
+        - ApiKeyAuth: []
+      responses:
+        '201':
+          description: Doctor created successfully
+          content:
+            application/json:
+              example:
+                message: Doctor created successfully
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              example:
+                code: '23502'
+                details: string
+                hint: string
+                message: >-
+                  null value in column 'speciality' of relation 'doctors'
+                  violates not-null constraint
+        '401':
+          description: Unauthorized access
+          content:
+            application/json:
+              example:
+                message: No API key found in request
+                hint: No 'apikey' request header or url param was found.
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              example:
+                code: '23505'
+                message: Duplicate entry for doctor
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              example:
+                message: Internal server error
+                details: Unexpected error occurred
+    post:
+      summary: Menambahkan jadwal dokter
+      tags:
+        - Admin
+        - Super Admin
+      security:
+        - bearerAuth: []
+        - ApiKeyAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                haripraktek:
+                  type: string
+                jampraktek:
+                  type: string
+                user_id:
+                  type: string
+      responses:
+        '201':
+          description: Doctor created successfully
+          content:
+            application/json:
+              example:
+                message: Doctor created successfully
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              example:
+                code: '23502'
+                details: string
+                hint: string
+                message: >-
+                  null value in column 'speciality' of relation 'doctors'
+                  violates not-null constraint
+        '401':
+          description: Unauthorized access
+          content:
+            application/json:
+              example:
+                message: No API key found in request
+                hint: No 'apikey' request header or url param was found.
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              example:
+                code: '23505'
+                message: Duplicate entry for doctor
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              example:
+                message: Internal server error
+                details: Unexpected error occurred
+    patch:
+      summary: Memperbarui jadwal dokter
+      tags:
+        - Admin
+        - Super Admin
+      security:
+        - bearerAuth: []
+        - ApiKeyAuth: []
+      parameters:
+        - name: id
+          in: query
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                haripraktek:
+                  type: string
+                jampraktek:
+                  type: string
+                user_id:
+                  type: string
+      responses:
+        '201':
+          description: Doctor created successfully
+          content:
+            application/json:
+              example:
+                message: Doctor created successfully
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              example:
+                code: '23502'
+                details: string
+                hint: string
+                message: >-
+                  null value in column 'speciality' of relation 'doctors'
+                  violates not-null constraint
+        '401':
+          description: Unauthorized access
+          content:
+            application/json:
+              example:
+                message: No API key found in request
+                hint: No 'apikey' request header or url param was found.
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              example:
+                code: '23505'
+                message: Duplicate entry for doctor
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              example:
+                message: Internal server error
+                details: Unexpected error occurred
+    delete:
+      summary: Menghapus jadwal dokter
+      tags:
+        - Admin
+        - Super Admin
+      security:
+        - bearerAuth: []
+        - ApiKeyAuth: []
+      parameters:
+        - name: id
+          in: query
+          required: true
+          schema:
+            type: integer
+      responses:
+        '201':
+          description: Doctor created successfully
+          content:
+            application/json:
+              example:
+                message: Doctor created successfully
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              example:
+                code: '23502'
+                details: string
+                hint: string
+                message: >-
+                  null value in column 'speciality' of relation 'doctors'
+                  violates not-null constraint
+        '401':
+          description: Unauthorized access
+          content:
+            application/json:
+              example:
+                message: No API key found in request
+                hint: No 'apikey' request header or url param was found.
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              example:
+                code: '23505'
+                message: Duplicate entry for doctor
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              example:
+                message: Internal server error
+                details: Unexpected error occurred
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: apikey
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+security:
+  - ApiKeyAuth: []
+  - ApiKeyAuth: []
